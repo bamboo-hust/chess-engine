@@ -23,7 +23,7 @@ struct DoublyLinkedList {
 
   DoublyLinkedList(): front(NULL), rear(NULL) {}
   
-  Node<X, Y>* add_page_to_head(X key, Y value) {
+  Node<X, Y>* add_page_to_head(const X &key, const Y &value) {
       Node<X, Y> *page = new Node<X, Y>(key, value);
       if(!front && !rear) {
           front = rear = page;
@@ -89,7 +89,7 @@ struct LRUCache{
         pageMap = map<X, Node<X, Y>*>();
     }
 
-    Y* get(X key) {
+    Y* get(const X &key) {
         if(pageMap.find(key)==pageMap.end()) {
           return NULL;
         }
@@ -100,7 +100,7 @@ struct LRUCache{
         return val;
     }
 
-    void set(X key, Y value) {
+    void set(const X &key, const Y &value) {
       if(pageMap.find(key)!=pageMap.end()) {
           // if key already present, update value and move page to head
           pageMap[key]->value = value;
