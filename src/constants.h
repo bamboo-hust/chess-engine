@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include "misc.h"
+
 using namespace std;
 
 const int PAWN = 0;
@@ -110,7 +112,8 @@ const int TABLE_SIZE = 1e8;
 const int QS_LIMIT = 150;
 const int EVAL_ROUGHNESS = 20;
 
-const array<string, 8> initial_board = {
+/*
+const Board initial_board = {
     "rnbqkbnr",
     "pppppppp",
     "........",
@@ -120,6 +123,7 @@ const array<string, 8> initial_board = {
     "PPPPPPPP",
     "RNBQKBNR",
 };
+*/
 
 void init_constants() {
 }
