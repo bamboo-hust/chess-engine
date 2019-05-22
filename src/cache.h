@@ -81,7 +81,8 @@ struct LRUCache{
   DoublyLinkedList<X, Y> *pageList;
   map<X, Node<X, Y>*> pageMap;
 
-  public:
+    LRUCache() {}
+
     LRUCache(int capacity) {
       this->capacity = capacity;
       size = 0;
