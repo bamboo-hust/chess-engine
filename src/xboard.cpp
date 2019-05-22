@@ -66,7 +66,7 @@ string render(int i) {
 
 bool forced = false;
 bool color = WHITE;
-int our_time = 10, opp_time = 10;
+int our_time = 100, opp_time = 100;
 bool show_thinking = false;
 int top = 0;
 
@@ -211,14 +211,14 @@ int main() {
             forced = false;
             clock_t start = clock();
             int move_remains = 40;
-            double use = our_time / move_remains;
+            double use = 1.0 * our_time / move_remains;
             if (our_time >= 100 && opp_time >= 100) {
-                use *= our_time / opp_time;
+                use *= 1.0 * our_time / opp_time;
             }
             Engine e;
             for (int depth = 1; depth <= MAX_DEPTH; depth++) {
                 e.search(pos, depth);
-                if (clock() - start / CLOCKS_PER_SEC > use) {
+                if (double(clock() - start) / CLOCKS_PER_SEC > 2) {
                     break;
                 }
             }
