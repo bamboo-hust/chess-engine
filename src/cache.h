@@ -2,6 +2,7 @@
 #define CACHE_H
 
 #include <bits/stdc++.h>
+#include "sparsepp/spp.h"
 
 using namespace std;
 
@@ -79,13 +80,13 @@ template<typename X, typename Y>
 struct LRUCache{
   int capacity, size;
   DoublyLinkedList<X, Y> *pageList;
-  map<X, Node<X, Y>*> pageMap;
+  spp::sparse_hash_map<X, Node<X, Y>*> pageMap;
 
     LRUCache(int capacity = 0) {
       this->capacity = capacity;
       size = 0;
         pageList = new DoublyLinkedList<X, Y>();
-        pageMap = map<X, Node<X, Y>*>();
+        pageMap = spp::sparse_hash_map<X, Node<X, Y>*>();
     }
 
     Y* get(const X &key) {

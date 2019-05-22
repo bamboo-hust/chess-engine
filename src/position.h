@@ -22,12 +22,16 @@ struct Position {
 	}
 	
     bool operator < (const Position &u) const {
-        if (board != u.board) return board < u.board;
+        if (score != u.score) return score < u.score;
         if (ep != u.ep) return ep < u.ep;
         if (kp != u.kp) return kp < u.kp;
         if (wc != u.wc) return wc < u.wc;
         if (bc != u.bc) return bc < u.bc;
-        return score < u.score;
+        return board < u.board;
+    }
+
+    bool operator == (const Position &u) const {
+    	return score == u.score && ep == u.ep && kp == u.kp && wc == u.wc && bc == u.bc && board == u.board;
     }
 
 	vector<Move> gen_moves() {
@@ -139,6 +143,18 @@ struct Position {
     }
 };
 
+namespace std {
+template <> struct hash<Position> {
+	size_t operator() (const Position &o) const {
+		return ((hash<string>{}(o.board) << 6) ^ o.score) << 4 ^ o.ep << 4 ^ o.kp;
+	}
+};
 
+template <> struct hash<tuple<Position, int, bool>> {
+	size_t operator() (const tuple<Position, int, bool> &o) const {
+		return ((hash<Position>{}(get<0>(o)) << 5) ^ get<1>(o)) << 1 ^ get<2>(o);
+	}
+};
+}
 
 #endif // POSITION_H
