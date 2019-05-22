@@ -13,7 +13,7 @@ struct Position {
 	int kp;
 	
     bool operator < (const Position &u) const {
-        if (score != u.score) return score < u.score;
+        //if (score != u.score) return score < u.score;
         if (ep != u.ep) return ep < u.ep;
         if (kp != u.kp) return kp < u.kp;
         if (wc != u.wc) return wc < u.wc;

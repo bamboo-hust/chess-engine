@@ -52,10 +52,12 @@ struct Engine {
                 Move killer = *killerIt;
                 res = max(res, -bound(pos.move(killer), 1 - gamma, depth - 1, false));
                 if (res >= gamma) {
+                    //cerr << "tp_move set " << pos.board << ' ' << killer.from << ' ' << killer.to << endl;
                     tp_move.set(pos, killer);
                     return res;
                 }
             }
+
             //all moves
             vector<Move> moves = pos.gen_moves();
             sort(moves.begin(), moves.end(), [&pos](const Move &u, const Move &v) {
@@ -65,6 +67,7 @@ struct Engine {
                 if (depth > 0 || pos.value(move) >= QS_LIMIT) {
                     res = max(res, -bound(pos.move(move), 1 - gamma, depth - 1, false));
                     if (res >= gamma) {
+                        //cerr << "tp_move set " << pos.board << ' ' << depth << ' ' << move.from << ' ' << move.to << endl;
                         tp_move.set(pos, move);
                         return res;
                     }

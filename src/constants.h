@@ -84,7 +84,7 @@ const int MATE_LOWER = piece['K'] - 10 * piece['Q'];
 const int MATE_UPPER = piece['K'] + 10 * piece['Q'];
 const int TABLE_SIZE = 1e8;
 
-const int MAX_DEPTH = 1000;
+const int MAX_DEPTH = 2;
 
 const int QS_LIMIT = 150;
 const int EVAL_ROUGHNESS = 20;
