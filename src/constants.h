@@ -11,6 +11,23 @@ const int BISHOP = 2;
 const int ROOK = 3;
 const int QUEEN = 4;
 const int KING = 5;
+const int A1 = 91;
+const int H1 = 98;
+const int A8 = 21;
+const int H8 = 28;
+string initial =
+    "         \n"  //   0 -  9
+    "         \n"  //  10 - 19
+    " rnbqkbnr\n"  //  20 - 29
+    " pppppppp\n"  //  30 - 39
+    " ........\n"  //  40 - 49
+    " ........\n"  //  50 - 59
+    " ........\n"  //  60 - 69
+    " ........\n"  //  70 - 79
+    " PPPPPPPP\n"  //  80 - 89
+    " RNBQKBNR\n"  //  90 - 99
+    "         \n"  // 100 -109
+    "         \n"; // 110 -119
 
 const int PIECE_VALUE[] = {
     100,

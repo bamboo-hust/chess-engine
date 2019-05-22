@@ -3,6 +3,8 @@
 
 using namespace std;
 
+
+
 struct Point {
     int x, y;
 
@@ -16,6 +18,14 @@ struct Point {
     }
 };
 
-using Board = array< array<uint8_t, 8>, 8 >;
+struct Move {
+    int from, to;
+    Move(int _from, int _to) {
+        from = _from;
+        to = _to;
+    }
+};
+
+//using Board = array< array<uint8_t, 8>, 8 >;
 
 #endif // MISC_H
