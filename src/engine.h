@@ -74,7 +74,33 @@ struct Engine {
         };
 
         int best = moves();
-        // null move for QSearch
+
+        // check draw
+        if (best < gamma && best < 0 && depth > 0) {
+            auto is_dead = [&moves](Position pos) {
+                for (auto m : pos.gen_moves()) {
+                    if (pos.value(m) >= MATE_LOWER) return 1;
+                }
+                return 0;
+            };
+            auto check_all_dead = [&]() {
+                for (auto m : pos.gen_moves()) {
+                    if (!is_dead(pos.move(m))) return 0;
+                }
+                return 1;
+            };
+            if (check_all_dead()) {
+                bool in_check = is_dead(pos.nullmove());
+                best = in_check ? -MATE_UPPER : 0;
+            }
+        }
+
+        if (best >= gamma) {
+            tp_score.set({pos, depth, root}, {best, entry.second});
+        } else {
+            tp_score.set({pos, depth, root}, {entry.first, best});
+        }
+        return best;
     }
 
     void search(const Position &pos, int depth) {
@@ -91,4 +117,4 @@ struct Engine {
 };
 
 
-#endif ENGINE_H
+#endif
