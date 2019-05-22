@@ -81,9 +81,7 @@ struct LRUCache{
   DoublyLinkedList<X, Y> *pageList;
   map<X, Node<X, Y>*> pageMap;
 
-    LRUCache() {}
-
-    LRUCache(int capacity) {
+    LRUCache(int capacity = 0) {
       this->capacity = capacity;
       size = 0;
         pageList = new DoublyLinkedList<X, Y>();
@@ -121,13 +119,6 @@ struct LRUCache{
         Node<X, Y> *page = pageList->add_page_to_head(key, value);
         size++;
         pageMap[key] = page;
-    }
-
-    ~LRUCache() {
-        for (auto u : pageMap) {
-            delete(u.second);
-        }
-      delete pageList;
     }
 };
 
