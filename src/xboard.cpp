@@ -175,6 +175,7 @@ string mrender(Position pos, Move m) {
 int main() {
     init();
     Position pos = parseFEN(FEN_INITIAL);
+    Engine e;
     while (true) {
         string command;
         if (top > 0) {
@@ -215,7 +216,6 @@ int main() {
             if (our_time >= 100 && opp_time >= 100) {
                 use *= 1.0 * our_time / opp_time;
             }
-            Engine e;
             for (int depth = 1; depth <= MAX_DEPTH; depth++) {
                 e.search(pos, depth);
                 if (double(clock() - start) / CLOCKS_PER_SEC > 2) {
