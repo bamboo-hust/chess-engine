@@ -66,7 +66,7 @@ string render(int i) {
 
 bool forced = false;
 bool color = WHITE;
-int our_time = 100, opp_time = 100;
+double our_time = 100, opp_time = 100;
 bool show_thinking = false;
 int top = 0;
 
@@ -222,14 +222,16 @@ int main() {
                     break;
                 }
             }
-            Move *pointer = e.tp_move.get(pos);
-            assert(pointer != NULL);
-            Move m = *pointer;
-            cout << "move " << mrender(pos, m) << endl;
-            pos = pos.move(m);
-            color = 1 - color;
-            //cout << (clock() - start) / CLOCKS_PER_SEC << endl;
-            
+            pair < int, int > entry = *e.tp_score.get(make_tuple(pos, e.depth, true));
+            Move m = *(e.tp_move.get(pos));
+            int s = entry.first;
+            if (s <= -MATE_UPPER) {
+                cout << "resign" << endl;
+            } else {
+                cout << "move " << mrender(pos, m) << endl;
+                pos = pos.move(m);
+                color = 1 - color;   
+            }
         } else if (prefix == "ping") {
             cout << "pong" << " " << split(command)[1];
         } else if (prefix == "usermove") {
@@ -241,9 +243,9 @@ int main() {
                 stacks[++top] = "go";
             }
         } else if (prefix == "time") {
-            our_time = atoi(split(command)[1].c_str());
+            our_time = stod(split(command)[1].c_str());
         } else if (prefix == "otime") {
-            opp_time = atoi(split(command)[1].c_str());
+            opp_time = stod(split(command)[1].c_str());
         } else if (prefix == "post") {
             show_thinking = true;
         } else if (prefix == "nopost") {
