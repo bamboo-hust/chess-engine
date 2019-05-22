@@ -12,6 +12,15 @@ struct Position {
 	int ep;
 	int kp;
 	
+    bool operator < (const Position &u) const {
+        if (score != u.score) return score < u.score;
+        if (ep != u.ep) return ep < u.ep;
+        if (kp != u.kp) return kp < u.kp;
+        if (wc != u.wc) return wc < u.wc;
+        if (bc != u.bc) return bc < u.bc;
+        return board < u.board;
+    }
+
 	vector<Move> gen_moves() {
 		vector<Move> res;
 		for (int i = 0; i < board.size(); ++i) {
@@ -108,6 +117,15 @@ struct Position {
 
 		return movescore;
 	}
+
+    // null move for QSearch
+    bool has_null_move() const {
+        const string patt = "RBNQ";
+        for (auto u : board) {
+            if (patt.find(u) != string::npos) return true;
+        }
+        return false;
+    }
 };
 
 
