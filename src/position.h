@@ -29,7 +29,7 @@ struct Position {
 			for (int d : directions[p]) {
 				for (int j = i + d; j >= 0 && j < board.size(); j += d) {
 					char q = board[j];
-					if (q == ' ' || Utils::is_uppercase(q)) break;
+					if (q == ' ' || q == '\n' || Utils::is_uppercase(q)) break;
 					if (p == 'P') {
 						if ((d == N || d == N + N) && q != '.') break;
 						if (d == N + N && (i < A1 + N || board[i + N] != '.')) break;
