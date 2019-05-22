@@ -84,7 +84,7 @@ struct Position {
 			if (abs(j - i) == 2) {
 				res.kp = (i + j) / 2;
 				res.board[j < i ? A1 : H1] = '.';
-				res.board[kp] = 'R';
+				res.board[res.kp] = 'R';
 			}
 		}
 
