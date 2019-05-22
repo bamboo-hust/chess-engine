@@ -27,7 +27,7 @@ struct Position {
 			char p = board[i];
 			if (!Utils::is_uppercase(p)) continue;
 			for (int d : directions[p]) {
-				for (int j = i + d; ; j += d) {
+				for (int j = i + d; j >= 0 && j < board.size(); j += d) {
 					char q = board[j];
 					if (q == ' ' || Utils::is_uppercase(q)) break;
 					if (p == 'P') {
@@ -93,6 +93,7 @@ struct Position {
 	}
 
 	int value(Move _move) {
+		assert(board.size() == 120);
 		int i = _move.from;
 		int j = _move.to;
 		char p = board[i];
