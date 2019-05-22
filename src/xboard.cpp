@@ -202,7 +202,8 @@ int main() {
                 use *= our_time / opp_time;
             }
             Engine e;
-            for (int depth = 1; depth <= 1000; depth++) {
+            for (int depth = 1; depth <= MAX_DEPTH; depth++) {
+                cerr << "in " << depth << endl;
                 e.search(pos, depth);
             }
             /*pos = pos.move(m);
