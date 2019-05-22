@@ -68,7 +68,7 @@ string render(int i) {
 
 bool forced = false;
 bool color = WHITE;
-int our_time = 1000, opp_time = 1000;
+int our_time = 100, opp_time = 100;
 bool show_thinking = false;
 int top = 0;
 
@@ -203,12 +203,18 @@ int main() {
             }
             Engine e;
             for (int depth = 1; depth <= MAX_DEPTH; depth++) {
-                cerr << "in " << depth << endl;
                 e.search(pos, depth);
+                if (clock() - start / CLOCKS_PER_SEC > use) {
+                    break;
+                }
             }
-            /*pos = pos.move(m);
+            Move *pointer = e.tp_move.get(pos);
+            assert(pointer != NULL);
+            Move m = *pointer;
+            cout << "Move : " << mrender(pos, m) << endl;
+            pos = pos.move(m);
             cout << pos.board << endl;
-            color = 1 - color;*/
+            color = 1 - color;
             //cout << (clock() - start) / CLOCKS_PER_SEC << endl;
             
         } else if (prefix == "ping") {
