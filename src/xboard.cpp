@@ -17,8 +17,8 @@ map < string, int > posWords;
 string stacks[MAX_STACK];
 string keywords[] = {"quit", "new", "setboard", "force", "go", "ping", "usermove", "time", 
                      "otim", "perft", "post", "nopost", "xboard", "random", "hard", "accept",
-                     "level"};
-const int KEYWORDS_SIZE = 17;
+                     "level", "protover 2"};
+const int KEYWORDS_SIZE = 18;
 
 
 void init() {
@@ -43,6 +43,7 @@ string detect(string command) {
 string read_next_command() {
     string command;
     getline(cin, command);
+    cout.flush();
     return command;
 }
 
@@ -65,7 +66,7 @@ string render(int i) {
 
 bool forced = false;
 bool color = WHITE;
-int our_time = 100, opp_time = 100;
+int our_time = 10, opp_time = 10;
 bool show_thinking = false;
 int top = 0;
 
@@ -183,13 +184,22 @@ int main() {
             continue;
         }
         vector < string > splits = split(command);
-        if (prefix == "new") {
+        if (command == "protover 2") {
+            cout << "feature done=0" << endl;
+            cout << "feature myname=\"chess\"" << endl;
+            cout << "feature usermove=1" << endl;
+            cout << "feature setboard=1" << endl;
+            cout << "feature ping=1" << endl;
+            cout << "feature sigint=0" << endl;
+            cout << "feature variants=\"normal\"" << endl;
+            cout << "feature done=1" << endl;
+        } else if (command == "new") {
             stacks[++top] = "setboard " + FEN_INITIAL;
         } else if (prefix == "setboard") {
             pos = parseFEN(command.substr(prefix.size() + 1, command.size() - prefix.size() - 1));
-        } else if (prefix == "force") {
+        } else if (command == "force") {
             forced = true;
-        } else if (prefix == "go") {
+        } else if (command == "go") {
             forced = false;
             clock_t start = clock();
             int move_remains = 40;
