@@ -109,7 +109,7 @@ void init_constants() {
         for (int i = 0; i < 8; ++i) {
             a.push_back(0);
             for (int j = 0; j < 8; ++j) {
-                a.push_back(it.second[i * 8 + j]);
+                a.push_back(piece[it.first] + it.second[i * 8 + j]);
             }
             a.push_back(0);
         }

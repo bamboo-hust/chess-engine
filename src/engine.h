@@ -110,7 +110,7 @@ struct Engine {
         this->depth = depth;
         int lower = -MATE_UPPER, upper = MATE_UPPER;
         while (lower < upper - EVAL_ROUGHNESS) {
-            int gamma = (lower + upper + 1) >> 1;
+            int gamma = (lower + upper + 1) / 2;
             int score = bound(pos, gamma, depth);
             if (score >= gamma) lower = score;
             else upper = score;
