@@ -27,7 +27,7 @@ struct Position {
 						if ((d == (N + W) || d == (N + E)) && q == '.' && (j != ep && j != kp)) break;
 					}
 					res.push_back(Move(i, j));
-					if (p == 'P' || p == 'N' || p == 'K' || !Utils::is_uppercase(q)) break;
+					if (p == 'P' || p == 'N' || p == 'K' || Utils::is_lowercase(q)) break;
 					if (i == A1 && board[j + E] == 'K' && wc[0]) res.push_back(Move(j + E, j + W));
 					if (i == H1 && board[j + W] == 'K' && wc[1]) res.push_back(Move(j + W, j + E));
 				}
@@ -37,11 +37,11 @@ struct Position {
 	}
 
 	Position rotate() {
-		return Position{Utils::swapcase(board), -score, bc, wc, ep ? 199 - ep : 0, kp ? 199 - kp : 0};
+		return Position{Utils::reverse(Utils::swapcase(board)), -score, bc, wc, ep ? 199 - ep : 0, kp ? 199 - kp : 0};
 	}
 
 	Position nullmove() {
-		return Position{Utils::swapcase(board), -score, bc, wc, 0, 0};	
+		return Position{Utils::reverse(Utils::swapcase(board)), -score, bc, wc, 0, 0};	
 	}
 
 	Position move(Move _move) {
@@ -90,9 +90,10 @@ struct Position {
 		char q = board[j];
 
 		int movescore = pst[p][j] - pst[p][i]; // positional difference
-
 		// capture
-		if (!Utils::is_uppercase(q)) movescore += pst[Utils::swapcase(q)][119 - j];
+		if (Utils::is_lowercase(q)) {
+			movescore += pst[Utils::swapcase(q)][119 - j];
+		}
 		// castling check
 		if (abs(j - kp) < 2) movescore += pst['K'][119 - j];
 		// castling
@@ -102,7 +103,7 @@ struct Position {
 		}
 		if (p == 'P') {
 			if (A8 <= j && j <= H8) movescore += pst['Q'][j] - pst['P'][j];
-			if (j == ep) score += pst['P'][119-(j+S)];
+			if (j == ep) score += pst['P'][119 - (j + S)];
 		}
 
 		return movescore;

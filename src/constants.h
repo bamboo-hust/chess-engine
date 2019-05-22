@@ -100,4 +100,20 @@ fast_map< char, vector<int> > directions = {
     {'K', {N, E, S, W, N+E, S+E, S+W, N+W}}
 };
 
+void init_constants() {
+    for (auto &it : pst) {
+        vector<int> a;
+        for (int i = 0; i < 16; ++i) a.push_back(0);
+        for (int i = 0; i < 8; ++i) {
+            a.push_back(0);
+            for (int j = 0; j < 8; ++j) {
+                a.push_back(it.second[i * 8 + j]);
+            }
+            a.push_back(0);
+        }
+        for (int i = 0; i < 16; ++i) a.push_back(0);
+        it.second = a;
+    }
+}
+
 #endif // CONSTANTS_H
