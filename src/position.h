@@ -45,6 +45,7 @@ struct Position {
 						if ((d == (N + W) || d == (N + E)) && q == '.' && (j != ep && j != kp)) break;
 					}
 					res.push_back(Move(i, j));
+
 					if (p == 'P' || p == 'N' || p == 'K' || Utils::is_lowercase(q)) break;
 					if (i == A1 && board[j + E] == 'K' && wc[0]) res.push_back(Move(j + E, j + W));
 					if (i == H1 && board[j + W] == 'K' && wc[1]) res.push_back(Move(j + W, j + E));
@@ -55,7 +56,7 @@ struct Position {
 	}
 
 	Position rotate() {
-		return Position(Utils::reverse(Utils::swapcase(board)), -score, bc, wc, ep ? 199 - ep : 0, kp ? 199 - kp : 0);
+		return Position(Utils::reverse(Utils::swapcase(board)), -score, bc, wc, ep ? 119 - ep : 0, kp ? 119 - kp : 0);
 	}
 
 	Position nullmove() {
@@ -69,6 +70,7 @@ struct Position {
 		char q = board[j];
 		Position res = *this;
 		res.score += value(_move);
+		res.ep = res.kp = 0;
 		res.board[j] = board[i];
 		res.board[i] = '.';
 
