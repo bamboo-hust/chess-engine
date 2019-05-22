@@ -22,6 +22,7 @@ const int KEYWORDS_SIZE = 17;
 
 
 void init() {
+    init_constants();
     for (int i = 0; i < KEYWORDS_SIZE; i++) {
         posWords[keywords[i]] = i + 1;
     }
