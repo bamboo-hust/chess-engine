@@ -59,9 +59,6 @@ string render(int i) {
         rank = rank - 1;
         fil  = fil + 10;
     }
-    cout << rank << " " << fil << endl;
-    //cout << (char)('a' + fil) << endl;
-    //cout << (char)('0' + (-rank + 1)) << endl;
     return string("") + (char)('a' + fil) + (char)('0' + (-rank + 1));
 }
 
@@ -190,7 +187,6 @@ int main() {
             stacks[++top] = "setboard " + FEN_INITIAL;
         } else if (prefix == "setboard") {
             pos = parseFEN(command.substr(prefix.size() + 1, command.size() - prefix.size() - 1));
-            cout << pos.board << endl;
         } else if (prefix == "force") {
             forced = true;
         } else if (prefix == "go") {
@@ -211,9 +207,8 @@ int main() {
             Move *pointer = e.tp_move.get(pos);
             assert(pointer != NULL);
             Move m = *pointer;
-            cout << "Move : " << mrender(pos, m) << endl;
+            cout << "move " << mrender(pos, m) << endl;
             pos = pos.move(m);
-            cout << pos.board << endl;
             color = 1 - color;
             //cout << (clock() - start) / CLOCKS_PER_SEC << endl;
             
@@ -222,14 +217,13 @@ int main() {
         } else if (prefix == "usermove") {
             Move m = mparse(split(command)[1]);
             pos = pos.move(m);
-            cout << pos.board << endl;
+            //cout << pos.board << endl;
             color = 1 - color;
             if (!forced) {
                 stacks[++top] = "go";
             }
         } else if (prefix == "time") {
             our_time = atoi(split(command)[1].c_str());
-            cout << our_time << endl;
         } else if (prefix == "otime") {
             opp_time = atoi(split(command)[1].c_str());
         } else if (prefix == "post") {
