@@ -5,6 +5,7 @@ using namespace std;
 #include "position.h"
 #include "misc.h"
 #include "constants.h"
+#include "engine.h"
 
 const string FEN_INITIAL = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const bool WHITE = 0;
@@ -48,6 +49,19 @@ int parse(string move) {
     int fil = move[0] - 'a';
     int rank = move[1] - '1';
     return A1 + fil - 10 * rank;
+}
+
+string render(int i) {
+    int rank = (i - A1) / 10;
+    int fil = (i - A1) % 10;
+    if (fil < 0) {
+        rank = rank - 1;
+        fil  = fil + 10;
+    }
+    cout << rank << " " << fil << endl;
+    //cout << (char)('a' + fil) << endl;
+    //cout << (char)('0' + (-rank + 1)) << endl;
+    return string("") + (char)('a' + fil) + (char)('0' + (-rank + 1));
 }
 
 
@@ -132,6 +146,25 @@ Position parseFEN(string fen) {
     
 }
 
+
+bool get_color(Position pos) {
+    if (pos.board[0] == '\n') {
+        return BLACK;
+    }
+    return WHITE;
+}
+
+string mrender(Position pos, Move m) {
+    string p = "";
+    if (A8 <= m.to && m.to <= H8 && pos.board[m.from] == 'P') {
+        p = 'q';
+    }
+    if (get_color(pos) == BLACK) {
+        m = Move(119 - m.from, 119 - m.to);
+    }
+    return render(m.from) + render(m.to) + p;
+}
+
 int main() {
     init();
     Position pos = parseFEN(FEN_INITIAL);
@@ -152,20 +185,34 @@ int main() {
             continue;
         }
         vector < string > splits = split(command);
-        string params = splits.size() >= 2 ? splits[1] : "";
         if (prefix == "new") {
-            stacks[++top] = "setboard" + FEN_INITIAL;
+            stacks[++top] = "setboard " + FEN_INITIAL;
         } else if (prefix == "setboard") {
-            pos = parseFEN(params);
+            pos = parseFEN(command.substr(prefix.size() + 1, command.size() - prefix.size() - 1));
+            cout << pos.board << endl;
         } else if (prefix == "force") {
             forced = true;
         } else if (prefix == "go") {
+            forced = false;
+            clock_t start = clock();
+            int move_remains = 40;
+            double use = our_time / move_remains;
+            if (our_time >= 100 && opp_time >= 100) {
+                use *= our_time / opp_time;
+            }
+            Engine e;
+            for (int depth = 1; depth <= 1000; depth++) {
+                e.search(pos, depth);
+            }
+            /*pos = pos.move(m);
+            cout << pos.board << endl;
+            color = 1 - color;*/
+            //cout << (clock() - start) / CLOCKS_PER_SEC << endl;
             
         } else if (prefix == "ping") {
-            cout << "pong" << " " << params;
+            cout << "pong" << " " << split(command)[1];
         } else if (prefix == "usermove") {
-            cout << pos.board << endl;
-            Move m = mparse(params);
+            Move m = mparse(split(command)[1]);
             pos = pos.move(m);
             cout << pos.board << endl;
             color = 1 - color;
@@ -173,10 +220,10 @@ int main() {
                 stacks[++top] = "go";
             }
         } else if (prefix == "time") {
-            our_time = atoi(params.c_str());
+            our_time = atoi(split(command)[1].c_str());
             cout << our_time << endl;
         } else if (prefix == "otime") {
-            opp_time = atoi(params.c_str());
+            opp_time = atoi(split(command)[1].c_str());
         } else if (prefix == "post") {
             show_thinking = true;
         } else if (prefix == "nopost") {

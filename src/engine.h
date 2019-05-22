@@ -22,7 +22,7 @@ struct Engine {
         nodes++;
         depth = max(0, depth);
         if (pos.score <= -MATE_LOWER) return -MATE_UPPER;
-        pair<int, int>* entryIt = tp_score.get({pos, depth, root});
+        pair<int, int>* entryIt = tp_score.get(make_tuple(pos, depth, root));
         pair<int, int> entry = entryIt ? *entryIt : make_pair(-MATE_UPPER, MATE_UPPER);
         if (entry.first >= gamma && (!root || tp_move.get(pos))) {
             return entry.first;
@@ -96,9 +96,9 @@ struct Engine {
         }
 
         if (best >= gamma) {
-            tp_score.set({pos, depth, root}, {best, entry.second});
+            tp_score.set(make_tuple(pos, depth, root), {best, entry.second});
         } else {
-            tp_score.set({pos, depth, root}, {entry.first, best});
+            tp_score.set(make_tuple(pos, depth, root), {entry.first, best});
         }
         return best;
     }
