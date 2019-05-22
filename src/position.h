@@ -11,14 +11,23 @@ struct Position {
 	array<bool, 2> bc;
 	int ep;
 	int kp;
+
+	Position(string board, int score, array<bool, 2> wc, array<bool, 2> bc, int ep, int kp) {
+		this->board = board;
+		this->score = score;
+		this->wc = wc;
+		this->bc = bc;
+		this->ep = ep;
+		this->kp = kp;
+	}
 	
     bool operator < (const Position &u) const {
-        //if (score != u.score) return score < u.score;
+        if (board != u.board) return board < u.board;
         if (ep != u.ep) return ep < u.ep;
         if (kp != u.kp) return kp < u.kp;
         if (wc != u.wc) return wc < u.wc;
         if (bc != u.bc) return bc < u.bc;
-        return board < u.board;
+        return score < u.score;
     }
 
 	vector<Move> gen_moves() {
@@ -46,11 +55,11 @@ struct Position {
 	}
 
 	Position rotate() {
-		return Position{Utils::reverse(Utils::swapcase(board)), -score, bc, wc, ep ? 199 - ep : 0, kp ? 199 - kp : 0};
+		return Position(Utils::reverse(Utils::swapcase(board)), -score, bc, wc, ep ? 199 - ep : 0, kp ? 199 - kp : 0);
 	}
 
 	Position nullmove() {
-		return Position{Utils::reverse(Utils::swapcase(board)), -score, bc, wc, 0, 0};	
+		return Position(Utils::reverse(Utils::swapcase(board)), -score, bc, wc, 0, 0);
 	}
 
 	Position move(Move _move) {
@@ -93,7 +102,6 @@ struct Position {
 	}
 
 	int value(Move _move) {
-		assert(board.size() == 120);
 		int i = _move.from;
 		int j = _move.to;
 		char p = board[i];
@@ -113,7 +121,7 @@ struct Position {
 		}
 		if (p == 'P') {
 			if (A8 <= j && j <= H8) movescore += pst['Q'][j] - pst['P'][j];
-			if (j == ep) score += pst['P'][119 - (j + S)];
+			if (j == ep) movescore += pst['P'][119 - (j + S)];
 		}
 
 		return movescore;

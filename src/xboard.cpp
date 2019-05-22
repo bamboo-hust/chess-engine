@@ -140,7 +140,15 @@ Position parseFEN(string fen) {
     }
     int ep = (fens[3] != "-");
 
-    Position pos = Position{board, color, wc, bc, ep, 0};
+    int score = 0;
+    for (int i = 0; i < board.size(); ++i)
+        if (Utils::is_uppercase(board[i])) score += pst[board[i]][i];
+    for (int i = 0; i < board.size(); ++i)
+        if (Utils::is_lowercase(board[i])) score -= pst[Utils::swapcase(board[i])][119 - i];
+
+
+    Position pos = Position(board, score, wc, bc, 0, 0);
+    if (color == BLACK) return pos.rotate();
     return pos;
     
 }
