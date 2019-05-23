@@ -211,17 +211,26 @@ int main() {
         } else if (command == "go") {
             forced = false;
             clock_t start = clock();
-            int move_remains = 40;
+            int move_remains = 50;
             double use = 1.0 * our_time / move_remains;
             if (our_time >= 100 && opp_time >= 100) {
-                use *= 1.0 * our_time / opp_time;
+                //use *= 1.0 * our_time / opp_time;
             }
+
+            ofstream fout("/home/lad/workspace/sandbox/chesstime.txt", ios_base::app);
+            fout << "time remaining = " << our_time/100 << " secs" << endl;
+            fout << "should think for " << use/100 << " secs" << endl;
+
+            e.nodes = 0;
             for (int depth = 1; depth <= MAX_DEPTH; depth++) {
                 e.search(pos, depth);
-                if (double(clock() - start) / CLOCKS_PER_SEC > 2) {
+                fout << "depth=" << depth << ' ' << e.nodes << endl;
+                if (double(clock() - start) / CLOCKS_PER_SEC > use / 100.0) {
                     break;
                 }
             }
+            fout << endl;
+            fout.close();
             pair < int, int > entry = *e.tp_score.get(make_tuple(pos, e.depth, true));
             Move m = *(e.tp_move.get(pos));
             int s = entry.first;
